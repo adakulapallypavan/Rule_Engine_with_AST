@@ -15,15 +15,21 @@ const CreateRule = () => {
   };
 
   return (
-    <div>
+    <div className='container_style'>
       <h2>Create Rule</h2>
-      <input
-        type="text"
-        value={ruleString}
-        onChange={(e) => setRuleString(e.target.value)}
-        placeholder="Enter rule string"
-      />
-      <button onClick={handleCreateRule}>Create Rule</button>
+      <textarea
+          value={ruleString}
+          onChange={(e) => setRuleString(e.target.value)}
+          onInput={(e) => {
+            const target = e.target;
+            target.style.height = 'auto'
+            target.style.height = target.scrollHeight + 'px';
+          }}
+          placeholder="Enter rule string"
+          className="rule_input"
+          rows="3" 
+      ></textarea>
+      <button onClick={handleCreateRule} className='cool_button'>Create Rule</button>
       
       {response && (
         <div>

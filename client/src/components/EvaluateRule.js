@@ -11,21 +11,59 @@ const EvaluateRule = () => {
   });
   const [result, setResult] = useState(null);
 
+  const getUserData = () => {
+    const inputWrappers = document.getElementsByClassName('input_wrapper')
+    const userData = {}
+    for (let i = 0; i < inputWrappers.length; i++) {
+      const key = inputWrappers[i].children[0].value
+      const value = inputWrappers[i].children[1].value
+      userData[key] = value 
+    }
+    return userData
+  }
+
   const handleEvaluateRule = async () => {
     try {
       const data = {
         ruleId,
-        data: userData,
+        data: getUserData(),
       };
+      console.log('evaluating the data:', data);
+      if(!ruleId) {
+        setResult('Please enter rule ID');
+        return;
+      }
       const res = await API.post('/rules/evaluate', data);
-      setResult(res.data.result);
+      if(res.data.error) {
+        throw new Error(res.data.error)
+      }
+      res.data.result ? setResult('Eligible') : setResult('Not Eligible');
     } catch (error) {
       console.error('Error evaluating rule:', error);
       setResult('Error occurred. Please check your inputs and rule.');
     }
   };
+
+  const handleAddInputField = () => {
+    const inputContainer = document.getElementById('input_container')
+    const inputWrapper = document.createElement('div')
+    inputWrapper.className = 'input_wrapper'
+
+    const keyInput = document.createElement('input')
+    keyInput.placeholder = 'Enter key'
+    keyInput.id = 'key'
+    inputWrapper.appendChild(keyInput)
+
+    const valueInput = document.createElement('input')
+    valueInput.placeholder = 'Enter value'
+    valueInput.id = 'value'
+    inputWrapper.appendChild(valueInput)
+    
+    inputContainer.prepend(inputWrapper)
+  }
+
   return (
-    <div>
+    <div id="evaluate_input" className='container_style'>
       <h2>Evaluate Rule</h2>
       <input
         type="text"
@@ -35,36 +73,19 @@ const EvaluateRule = () => {
       />
 
       <h3>User Data</h3>
-      <input
-        type="text"
-        value={userData.age}
-        onChange={(e) => setUserData({ ...userData, age: e.target.value })}
-        placeholder="Enter age"
-      />
-      <input
-        type="text"
-        value={userData.department}
-        onChange={(e) => setUserData({ ...userData, department: e.target.value })}
-        placeholder="Enter department"
-      />
-      <input
-        type="text"
-        value={userData.salary}
-        onChange={(e) => setUserData({ ...userData, salary: e.target.value })}
-        placeholder="Enter salary"
-      />
-      <input
-        type="text"
-        value={userData.experience}
-        onChange={(e) => setUserData({ ...userData, experience: e.target.value })}
-        placeholder="Enter experience"
-      />
 
-      <button onClick={handleEvaluateRule}>Evaluate</button>
+      <div id="input_container">
+        <div className="input_wrapper">
+          <input id="key" placeholder="Enter key" />
+          <input id="value" placeholder="Enter value" />
+        </div></div>
+      <button onClick={handleAddInputField} className='cool_button'>Add Field</button>
+
+      <button onClick={handleEvaluateRule} className='cool_button'>Evaluate</button>
 
       {result !== null && (
         <div>
-          <h3>Evaluation Result: {result ? 'Eligible' : 'Not Eligible'}</h3>
+          <h3>Evaluation Result: {result}</h3>
         </div>
       )}
     </div>

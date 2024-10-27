@@ -19,7 +19,7 @@ const CombineRules = () => {
   };
 
   return (
-    <div>
+    <div className='container_style'>
       <h2>Combine Rules</h2>
       {ruleStrings.map((rule, index) => (
         <input
@@ -34,8 +34,8 @@ const CombineRules = () => {
           placeholder="Enter rule string"
         />
       ))}
-      <button onClick={handleAddRule}>Add Another Rule</button>
-      <button onClick={handleCombineRules}>Combine Rules</button>
+      <button onClick={handleAddRule} className='cool_button'>Add Another Rule</button>
+      <button onClick={handleCombineRules} className='cool_button'>Combine Rules</button>
 
       {response && (
         <div>

@@ -2,14 +2,17 @@ import React from 'react';
 import CreateRule from './components/CreateRule';
 import CombineRules from './components/CombineRules';
 import EvaluateRule from './components/EvaluateRule';
+import './App.css';
 
 const App = () => {
   return (
-    <div>
+    <div className='main-app'>
       <h1>Rule Engine with AST</h1>
-      <CreateRule />
-      <CombineRules />
-      <EvaluateRule />
+      <div id="main_features">
+        <CreateRule />
+        <CombineRules />
+        <EvaluateRule />
+      </div>
     </div>
   );
 };
