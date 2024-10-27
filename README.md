@@ -13,7 +13,7 @@
 
 2. Navigate to the frontend folder and install dependencies:
     ```sh
-    cd frontend
+    cd client
     npm install
     ```
 
